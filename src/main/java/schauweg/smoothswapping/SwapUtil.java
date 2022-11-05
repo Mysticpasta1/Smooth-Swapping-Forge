@@ -1,6 +1,7 @@
 package schauweg.smoothswapping;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.NonNullList;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
@@ -32,7 +33,7 @@ public class SwapUtil {
     public static int getSlotIndex(ItemStack stack) {
         if (Minecraft.getInstance().player == null) return -1;
         AbstractContainerMenu handler = Minecraft.getInstance().player.containerMenu;
-        List<ItemStack> stacks = handler.getItems();
+        NonNullList<ItemStack> stacks = handler.getItems();
         return stacks.indexOf(stack);
     }
 
@@ -92,7 +93,7 @@ public class SwapUtil {
                     }
 
                     Slot lessSlot = handler.getSlot(lessStack.getSlotID());
-                    SwapUtil.addInventorySwap(moreStack.getSlotID(), lessSlot, moreSlot, ItemStack.isSame(moreStack.getOldStack(), moreStack.getNewStack()), amount);
+                    SwapUtil.addInventorySwap(moreStack.getSlotID(), lessSlot, moreSlot, ItemStack.isSameIgnoreDurability(moreStack.getOldStack(), moreStack.getNewStack()), amount);
                     if (lessStack.itemCountToChange == 0){
                         lessStacks.remove(lessStack);
                     }
@@ -105,7 +106,7 @@ public class SwapUtil {
     }
 
     public static int getCount(ItemStack stack) {
-        return ItemStack.isSame(stack, Items.AIR.getDefaultInstance()) ? 0 : stack.getCount();
+        return ItemStack.isSameIgnoreDurability(stack, Items.AIR.getDefaultInstance()) ? 0 : stack.getCount();
     }
 
 }

@@ -38,16 +38,16 @@ public class ServerboundContainerClickPacketMixin {
     private int slotNum;
 
     @Inject(method = "<init>(IIIILnet/minecraft/world/inventory/ClickType;Lnet/minecraft/world/item/ItemStack;Lit/unimi/dsi/fastutil/ints/Int2ObjectMap;)V", at = @At("TAIL"))
-    public void onInit(CallbackInfo cbi) {
-        //remove swap when stack gets moved before it arrived
-        SmoothSwapping.swaps.remove(slotNum);
+	public void onInit(int p_182734_, int p_182735_, int p_182736_, int p_182737_, ClickType p_182738_, ItemStack p_182739_, Int2ObjectMap<ItemStack> p_182740_, CallbackInfo cbi) {
+		//remove swap when stack gets moved before it arrived
+		SmoothSwapping.swaps.remove(slotNum);
 
-        if ((clickType == ClickType.QUICK_MOVE || clickType == ClickType.SWAP) && changedSlots.size() > 1 && Minecraft.getInstance().screen instanceof AbstractContainerScreen) {
-            assert Minecraft.getInstance().player != null;
+		if ((clickType == ClickType.QUICK_MOVE || clickType == ClickType.SWAP) && changedSlots.size() > 1 && Minecraft.getInstance().screen instanceof AbstractContainerScreen) {
+			assert Minecraft.getInstance().player != null;
 
-            LocalPlayer player = Minecraft.getInstance().player;
-            AbstractContainerMenu screenHandler = player.containerMenu;
-            Slot mouseHoverSlot = screenHandler.getSlot(slotNum);
+			LocalPlayer player = Minecraft.getInstance().player;
+			AbstractContainerMenu screenHandler = player.containerMenu;
+			Slot mouseHoverSlot = screenHandler.getSlot(slotNum);
 
             if (clickType == ClickType.QUICK_MOVE && !mouseHoverSlot.allowModification(player)) {
 

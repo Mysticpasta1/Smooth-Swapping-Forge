@@ -1,9 +1,11 @@
 package schauweg.smoothswapping.mixin;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
+import net.minecraft.core.NonNullList;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Final;
@@ -35,7 +37,7 @@ public abstract class AbstractContainerScreenMixin {
     private Screen currentScreen = null;
 
     @Inject(method = "render", at = @At("HEAD"))
-    public void onRender(CallbackInfo cbi) {
+    public void onRender(PoseStack p_97795_, int p_97796_, int p_97797_, float p_97798_, CallbackInfo cbi) {
 
         @SuppressWarnings("rawtypes")
         AbstractContainerScreen handledScreen = (AbstractContainerScreen) (Object) this;
@@ -48,7 +50,7 @@ public abstract class AbstractContainerScreenMixin {
             return;
         }
 
-        List<ItemStack> stacks = client.player.containerMenu.getItems();
+        NonNullList<ItemStack> stacks = client.player.containerMenu.getItems();
 
         Screen screen = client.screen;
 
@@ -105,21 +107,21 @@ public abstract class AbstractContainerScreenMixin {
         for (int slotID = 0; slotID < oldStacks.size(); slotID++) {
             ItemStack newStack = newStacks.get(slotID);
             ItemStack oldStack = oldStacks.get(slotID);
-            if (!ItemStack.isSame(oldStack, newStack)) {
+            if (!ItemStack.matches(oldStack, newStack)) {
                 changedStacks.put(slotID, newStack.copy());
             }
         }
         return changedStacks;
     }
 
-    private boolean areStacksEqual(List<ItemStack> oldStacks, List<ItemStack> newStacks) {
+    private boolean areStacksEqual(NonNullList<ItemStack> oldStacks, NonNullList<ItemStack> newStacks) {
         if (oldStacks == null || newStacks == null || (oldStacks.size() != newStacks.size())) {
             return false;
         } else {
             for (int slotID = 0; slotID < oldStacks.size(); slotID++) {
                 ItemStack newStack = newStacks.get(slotID);
                 ItemStack oldStack = oldStacks.get(slotID);
-                if (!ItemStack.isSame(oldStack, newStack)) {
+                if (!ItemStack.matches(oldStack, newStack)) {
                     return false;
                 }
             }
@@ -128,7 +130,7 @@ public abstract class AbstractContainerScreenMixin {
     }
 
 
-    private void addAll(List<ItemStack> oldStacks, List<ItemStack> newStacks) {
+    private void addAll(NonNullList<ItemStack> oldStacks, NonNullList<ItemStack> newStacks) {
         oldStacks.clear();
         newStacks.stream().map(ItemStack::copy).forEach(oldStacks::add);
     }
