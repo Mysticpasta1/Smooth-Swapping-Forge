@@ -3,12 +3,13 @@
   "minVersion": "0.8",
   "package": "schauweg.smoothswapping.mixin",
   "compatibilityLevel": "JAVA_17",
+  "refmap": "smoothswapping.refmap.json",
   "mixins": [
   ],
   "client": [
     "AbstractContainerScreenMixin",
-    "ServerboundContainerClickPacketMixin",
-    "ItemRendererMixin"
+    "ItemRendererMixin",
+    "ServerboundContainerClickPacketMixin"
   ],
   "injectors": {
     "defaultRequire": 1
