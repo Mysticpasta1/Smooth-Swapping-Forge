@@ -1,40 +1,45 @@
 package schauweg.smoothswapping.config;
 
+import net.minecraft.network.chat.Component;
+import net.minecraftforge.common.ForgeConfigSpec;
+import org.apache.commons.lang3.tuple.Pair;
+
 public class Config {
+	public static final Client CLIENT;
+	public static final ForgeConfigSpec CLIENT_SPEC;
 
-    private int animationSpeed = 100;
-    private String easeMode = "linear";
-    private int easeSpeed = 400;
+	static {
+		Pair<Client, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(Client::new);
+		CLIENT_SPEC = specPair.getRight();
+		CLIENT = specPair.getLeft();
+	}
 
-    public int getAnimationSpeed() {
-        return animationSpeed;
-    }
+	public static class Client {
+		public final ForgeConfigSpec.IntValue animationSpeed;
+		public final ForgeConfigSpec.ConfigValue<String> easeMode;
+		public final ForgeConfigSpec.IntValue easeSpeed;
 
-    public void setAnimationSpeed(int animationSpeed) {
-        this.animationSpeed = animationSpeed;
-    }
+		public Client(ForgeConfigSpec.Builder builder) {
+			animationSpeed = builder
+					.comment(Component.translatable("smoothswapping.config.option.animationspeed.desc").getString())
+					.defineInRange(Component.translatable("smoothswapping.config.option.animationspeed").getString(), 100, 1, 400);
 
-    public float getAnimationSpeedFormatted() {
-        return animationSpeed / 100F;
-    }
+			easeMode = builder
+					.comment(Component.translatable("smoothswapping.config.option.ease.desc").getString())
+					.define(Component.translatable("smoothswapping.config.option.ease").getString(), "linear");
 
-    public int getEaseSpeed() {
-        return easeSpeed;
-    }
+			easeSpeed = builder
+					.comment(Component.translatable("smoothswapping.config.option.easespeed.desc").getString())
+					.defineInRange(Component.translatable("smoothswapping.config.option.easespeed").getString(), 400, 100, 1000);
 
-    public void setEaseSpeed(int easeSpeed) {
-        this.easeSpeed = easeSpeed;
-    }
+		}
 
-    public float getEaseSpeedFormatted() {
-        return easeSpeed / 100F;
-    }
+		public float getEaseSpeedFormatted() {
+			return easeSpeed.get() / 100F;
+		}
 
-    public String getEaseMode() {
-        return easeMode;
-    }
-
-    public void setEaseMode(String easeMode) {
-        this.easeMode = easeMode;
-    }
+		public float getAnimationSpeedFormatted() {
+			return animationSpeed.get() / 100F;
+		}
+	}
 }

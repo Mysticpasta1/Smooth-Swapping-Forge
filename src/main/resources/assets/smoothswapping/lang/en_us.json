@@ -9,5 +9,8 @@
   "smoothswapping.config.option.ease.ease-out": "Ease-Out",
   "smoothswapping.config.option.ease.ease-in-out": "Ease-In-Out",
   "smoothswapping.config.option.easespeed": "Ease Animation Speed",
-  "smoothswapping.config.option.easespeed.speed": "Speed"
+  "smoothswapping.config.option.easespeed.speed": "Speed",
+  "smoothswapping.config.option.animationspeed.desc": "Setting Swap Item Animation Speed [1 ~ 400]",
+  "smoothswapping.config.option.ease.desc": "Setting Ease Swap Item Animation Style. [linear, ease-in, ease-in-out]",
+  "smoothswapping.config.option.easespeed.desc": "Setting Ease Swap Item Animation Speed [1 ~ 1000]"
 }

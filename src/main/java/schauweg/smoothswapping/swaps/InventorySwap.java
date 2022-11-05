@@ -1,6 +1,6 @@
 package schauweg.smoothswapping.swaps;
 
-import net.minecraft.screen.slot.Slot;
+import net.minecraft.world.inventory.Slot;
 
 public class InventorySwap {
 

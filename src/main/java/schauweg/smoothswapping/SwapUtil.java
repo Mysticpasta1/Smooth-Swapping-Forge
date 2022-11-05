@@ -1,11 +1,10 @@
 package schauweg.smoothswapping;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.slot.Slot;
-import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import schauweg.smoothswapping.config.Config;
 import schauweg.smoothswapping.swaps.InventorySwap;
 
@@ -31,9 +30,9 @@ public class SwapUtil {
     }
 
     public static int getSlotIndex(ItemStack stack) {
-        if (MinecraftClient.getInstance().player == null) return -1;
-        ScreenHandler handler = MinecraftClient.getInstance().player.currentScreenHandler;
-        DefaultedList<ItemStack> stacks = handler.getStacks();
+        if (Minecraft.getInstance().player == null) return -1;
+        AbstractContainerMenu handler = Minecraft.getInstance().player.containerMenu;
+        List<ItemStack> stacks = handler.getItems();
         return stacks.indexOf(stack);
     }
 
@@ -55,14 +54,14 @@ public class SwapUtil {
         return (in - inMin) / (inMax - inMin) * (outMax - outMin) + outMin;
     }
 
-    public static float getEase(Config config, float progress){
-            switch (config.getEaseMode()) {
-                case "linear" -> progress = 1f;
-                case "ease-in" -> progress = progress - 1;
-                case "ease-in-out" -> progress = progress >= 0.5f ? 1f - progress : progress;
-                //for "ease-out" do nothing
-            }
-        return SwapUtil.bezierBlend(progress) * config.getEaseSpeedFormatted();
+    public static float getEase(float progress) {
+        switch (Config.CLIENT.easeMode.get()) {
+            case "linear" -> progress = 1f;
+            case "ease-in" -> progress = progress - 1;
+            case "ease-in-out" -> progress = progress >= 0.5f ? 1f - progress : progress;
+            //for "ease-out" do nothing
+        }
+        return SwapUtil.bezierBlend(progress) * Config.CLIENT.getEaseSpeedFormatted();
     }
 
     public static void addInventorySwap(int index, Slot fromSlot, Slot toSlot, boolean checked, int amount) {
@@ -71,10 +70,10 @@ public class SwapUtil {
         SmoothSwapping.swaps.put(index, swaps);
     }
 
-    public static void assignSwaps(List<SwapStacks> moreStacks, List<SwapStacks> lessStacks, ScreenHandler handler){
+    public static void assignSwaps(List<SwapStacks> moreStacks, List<SwapStacks> lessStacks, AbstractContainerMenu handler) {
         for (int i = 0; i < moreStacks.size(); i++) {
             SwapStacks moreStack = moreStacks.get(i);
-            if (moreStack.itemCountToChange == 0){
+            if (moreStack.itemCountToChange == 0) {
                 moreStacks.remove(moreStack);
             }
             Slot moreSlot = handler.getSlot(moreStack.getSlotID());
@@ -93,7 +92,7 @@ public class SwapUtil {
                     }
 
                     Slot lessSlot = handler.getSlot(lessStack.getSlotID());
-                    SwapUtil.addInventorySwap(moreStack.getSlotID(), lessSlot, moreSlot, ItemStack.areItemsEqual(moreStack.getOldStack(), moreStack.getNewStack()), amount);
+                    SwapUtil.addInventorySwap(moreStack.getSlotID(), lessSlot, moreSlot, ItemStack.isSame(moreStack.getOldStack(), moreStack.getNewStack()), amount);
                     if (lessStack.itemCountToChange == 0){
                         lessStacks.remove(lessStack);
                     }
@@ -106,7 +105,7 @@ public class SwapUtil {
     }
 
     public static int getCount(ItemStack stack) {
-        return ItemStack.areItemsEqual(stack, Items.AIR.getDefaultStack()) ? 0 : stack.getCount();
+        return ItemStack.isSame(stack, Items.AIR.getDefaultInstance()) ? 0 : stack.getCount();
     }
 
 }
