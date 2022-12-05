@@ -13,4 +13,4 @@ Schauweg - Original Author
 
 [Curseforge(Fabric - Original)](https://www.curseforge.com/minecraft/mc-mods/smooth-swapping)
 
-Forge version is coming soon
+[Curseforge(Forge)]https://www.curseforge.com/minecraft/mc-mods/smooth-swapping-forge
