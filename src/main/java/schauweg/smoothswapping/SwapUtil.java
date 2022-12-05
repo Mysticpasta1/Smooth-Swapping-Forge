@@ -43,7 +43,7 @@ public class SwapUtil {
         }
     }
 
-    private static int getQuadrant(float angle) {
+    private static int getQuadrant(double angle) {
         return (int) (Math.floor(2 * angle / PI) % 4 + 4) % 4;
     }
 

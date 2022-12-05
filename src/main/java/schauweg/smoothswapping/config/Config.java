@@ -21,16 +21,16 @@ public class Config {
 
 		public Client(ForgeConfigSpec.Builder builder) {
 			animationSpeed = builder
-					.comment(Component.translatable("smoothswapping.config.option.animationspeed.desc").getString())
-					.defineInRange(Component.translatable("smoothswapping.config.option.animationspeed").getString(), 100, 1, 400);
+					.comment(Component.translatable("Setting Swap Item Animation Speed [1 ~ 400]").getString())
+					.defineInRange("Animation Speed", 40, 1, 400);
 
 			easeMode = builder
-					.comment(Component.translatable("smoothswapping.config.option.ease.desc").getString())
-					.define(Component.translatable("smoothswapping.config.option.ease").getString(), "linear");
+					.comment("Setting Ease Swap Item Animation Style. [linear, ease-in, ease-in-out]")
+					.define("Ease Animation Style", "linear");
 
 			easeSpeed = builder
-					.comment(Component.translatable("smoothswapping.config.option.easespeed.desc").getString())
-					.defineInRange(Component.translatable("smoothswapping.config.option.easespeed").getString(), 400, 100, 1000);
+					.comment("Setting Ease Swap Item Animation Speed [1 ~ 1000]")
+					.defineInRange("Ease Animation Speed", 400, 10, 1000);
 
 		}
 

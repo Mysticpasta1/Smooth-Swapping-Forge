@@ -113,12 +113,18 @@ public abstract class ItemRendererMixin {
 				boolean renderToSlot = true;
 
 				for (InventorySwap swap : swapList) {
-                    stackCount -= swap.getAmount();
-                    if (!swap.renderDestinationSlot()) {
-                        renderToSlot = false;
-                    }
-            
-                    if (swap.getAmount() > 1) {
+
+					if (!ItemStack.matches(stack, swap.getSwapItem())) {
+						SmoothSwapping.swaps.remove(index);
+						return;
+					}
+
+					stackCount -= swap.getAmount();
+					if (!swap.renderDestinationSlot()) {
+						renderToSlot = false;
+					}
+
+					if (swap.getAmount() > 1) {
 						String amount = String.valueOf(swap.getAmount());
 						MultiBufferSource.BufferSource immediate = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
 
@@ -149,7 +155,7 @@ public abstract class ItemRendererMixin {
 
 		double x = swap.getX();
 		double y = swap.getY();
-		float angle = swap.getAngle();
+		double angle = swap.getAngle();
 
 		float progress = SwapUtil.map((float) Math.hypot(x, y), 0, (float) swap.getDistance(), 0.95f, 0.05f);
 

@@ -1,28 +1,32 @@
 package schauweg.smoothswapping.swaps;
 
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 
 public class InventorySwap {
 
-    private final float angle;
-    private double x;
-    private double y;
-    private final double distance;
-    private boolean renderDestinationSlot;
-    private boolean checked;
+    private double x, y;
+    private final double distance, startX, startY, angle;
+    private boolean renderDestinationSlot, checked;
     private final int amount;
+
+    private final ItemStack swapItem;
+
 
     public InventorySwap(Slot fromSlot, Slot toSlot, boolean checked, int amount) {
         this.x = toSlot.x - fromSlot.x;
         this.y = toSlot.y - fromSlot.y;
+        this.startX = toSlot.x - fromSlot.x;
+        this.startY = toSlot.y - fromSlot.y;
         this.angle = (float) (Math.atan2(y, x) + Math.PI);
         this.distance = Math.hypot(x, y);
         this.renderDestinationSlot = false;
         this.checked = checked;
         this.amount = amount;
+        this.swapItem = toSlot.getItem();
     }
 
-    public float getAngle() {
+    public double getAngle() {
         return angle;
     }
 
@@ -46,6 +50,14 @@ public class InventorySwap {
         return distance;
     }
 
+    public double getStartX() {
+        return startX;
+    }
+
+    public double getStartY() {
+        return startY;
+    }
+
     public boolean renderDestinationSlot() {
         return renderDestinationSlot;
     }
@@ -58,8 +70,8 @@ public class InventorySwap {
         return checked;
     }
 
-    public void setChecked(boolean checked) {
-        this.checked = checked;
+    public ItemStack getSwapItem() {
+        return swapItem;
     }
 
     public int getAmount() {
