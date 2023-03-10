@@ -93,7 +93,7 @@ public class SwapUtil {
                     }
 
                     Slot lessSlot = handler.getSlot(lessStack.getSlotID());
-                    SwapUtil.addInventorySwap(moreStack.getSlotID(), lessSlot, moreSlot, ItemStack.isSameIgnoreDurability(moreStack.getOldStack(), moreStack.getNewStack()), amount);
+                    SwapUtil.addInventorySwap(moreStack.getSlotID(), lessSlot, moreSlot, ItemStack.isSame(moreStack.getOldStack(), moreStack.getNewStack()), amount);
                     if (lessStack.itemCountToChange == 0){
                         lessStacks.remove(lessStack);
                     }
@@ -106,7 +106,7 @@ public class SwapUtil {
     }
 
     public static int getCount(ItemStack stack) {
-        return ItemStack.isSameIgnoreDurability(stack, Items.AIR.getDefaultInstance()) ? 0 : stack.getCount();
+        return ItemStack.isSame(stack, Items.AIR.getDefaultInstance()) ? 0 : stack.getCount();
     }
 
 }
