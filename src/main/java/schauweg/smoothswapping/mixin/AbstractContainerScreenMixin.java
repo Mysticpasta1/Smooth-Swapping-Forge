@@ -7,7 +7,13 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.javafmlmod.FMLModContainer;
+import net.p3pp3rf1y.sophisticatedbackpacks.client.gui.BackpackScreen;
+import net.p3pp3rf1y.sophisticatedbackpacks.client.gui.BackpackSettingsScreen;
+import net.p3pp3rf1y.sophisticatedbackpacks.common.gui.BackpackContainer;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -42,12 +48,22 @@ public abstract class AbstractContainerScreenMixin {
         @SuppressWarnings("rawtypes")
         AbstractContainerScreen handledScreen = (AbstractContainerScreen) (Object) this;
 
-        if (handledScreen instanceof CreativeModeInventoryScreen) return;
-
         Minecraft client = Minecraft.getInstance();
 
         if (client.player == null || client.player.containerMenu == null) {
             return;
+        }
+
+        if (handledScreen instanceof CreativeModeInventoryScreen creativeModeInventoryScreen) {
+            if (creativeModeInventoryScreen.getSelectedTab() != CreativeModeTab.TAB_INVENTORY.getId()) {
+                return;
+            }
+        }
+
+        if(ModList.get().isLoaded("sophisticatedbackpacks")) {
+            if (handledScreen instanceof BackpackScreen || handledScreen instanceof BackpackSettingsScreen) {
+                return;
+            }
         }
 
         NonNullList<ItemStack> stacks = client.player.containerMenu.getItems();

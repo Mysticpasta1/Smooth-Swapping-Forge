@@ -5,7 +5,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '6.0.+', changing: true
         classpath group: "org.spongepowered", name: "mixingradle", version: "0.7-SNAPSHOT"
     }
 }
@@ -19,7 +19,7 @@ mixin {
     add sourceSets.main, "smoothswapping.refmap.json"
 }
 
-version = '1.19.2-1.0.2'
+version = '1.19.2-2.0.0-forge'
 group = 'schauweg.smoothswapping' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'Smooth Swapping'
 
@@ -127,7 +127,14 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
-
+    repositories {
+        maven {
+            url "https://cursemaven.com"
+            content {
+                includeGroup "curse.maven"
+            }
+        }
+    }
 }
 
 dependencies {
@@ -137,25 +144,8 @@ dependencies {
     minecraft 'net.minecraftforge:forge:1.19.2-43.1.27'
 
     annotationProcessor "org.spongepowered:mixin:0.8.5:processor"
-    //implementation fg.deobf("curse.maven:mysterious-mountain-lib-368098:3788751")
-    // You may put jars on which you depend on in ./libs or you may define them like so..
-    // compile "some.group:artifact:version:classifier"
-    // compile "some.group:artifact:version"
-
-    // Real examples
-    // compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
-    // compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
-
-    // The 'provided' configuration is for optional dependencies that exist at compile-time but might not at runtime.
-    // provided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
-
-    // These dependencies get remapped to your current MCP mappings
-    // deobf 'com.mod-buildcraft:buildcraft:6.0.8:dev'
-
-    // For more info...
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
-
+    implementation fg.deobf("curse.maven:sophisticated-backpacks-422301:5194759")
+    implementation fg.deobf("curse.maven:sophisticated-core-618298:5194752")
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..
